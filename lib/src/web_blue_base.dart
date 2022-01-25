@@ -1,6 +1,10 @@
-// TODO: Put public facing types in this file.
+part of '../web_blue.dart';
 
-/// Checks if you are awesome. Spoiler: you are.
-class Awesome {
-  bool get isAwesome => true;
+class Blue extends Delegate<Object> {
+  Blue._(delegate) : super(delegate);
+
+  Future<bool> getAvailability() {
+    var promise = callMethod('getAvailability');
+    return promiseToFuture(promise);
+  }
 }
