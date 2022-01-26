@@ -3,6 +3,8 @@
 import 'package:flutter/material.dart';
 import 'package:web_blue/web_blue.dart';
 
+import 'woodemi_notepad_page.dart';
+
 void main() {
   runApp(const MyApp());
 }
@@ -46,6 +48,15 @@ class MyHomePage extends StatelessWidget {
               onPressed: () async {
                 bool availability = await blue.getAvailability();
                 print('availability $availability');
+              },
+            ),
+            ElevatedButton(
+              child: const Text('Woodemi Notepad'),
+              onPressed: () {
+                var route = MaterialPageRoute(builder: (context) {
+                  return const WoodemiNotepadPage();
+                });
+                Navigator.of(context).push(route);
               },
             ),
           ],
