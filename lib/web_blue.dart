@@ -1,7 +1,7 @@
 @JS()
 library web_blue;
 
-import 'dart:html' show EventTarget;
+import 'dart:html' show EventListener, EventTarget;
 import 'dart:js_util' show promiseToFuture;
 
 import 'package:js/js.dart';
@@ -18,7 +18,7 @@ bool canUseBlue() => _blue != null;
 Blue? _instance;
 Blue get blue {
   if (_blue != null) {
-    return _instance ??= Blue._(_blue);
+    return _instance ??= Blue._(_blue!);
   }
   throw 'navigator.bluetooth unavailable';
 }

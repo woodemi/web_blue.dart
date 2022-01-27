@@ -1,11 +1,21 @@
 part of '../web_blue.dart';
 
-class Blue extends Delegate<Object> {
-  Blue._(delegate) : super(delegate);
+class Blue extends Delegate<EventTarget> {
+  Blue._(EventTarget delegate) : super(delegate);
 
   Future<bool> getAvailability() {
     var promise = callMethod('getAvailability');
     return promiseToFuture(promise);
+  }
+
+  // FIXME allowInterop
+  void subscribeAvailabilitychanged(EventListener listener) {
+    delegate.addEventListener('availabilitychanged', listener);
+  }
+
+  // FIXME allowInterop
+  void unsubscribeAvailabilitychanged(EventListener listener) {
+    delegate.removeEventListener('availabilitychanged', listener);
   }
 
   Future<BlueDevice> requestDevice([RequestOptions? options]) {

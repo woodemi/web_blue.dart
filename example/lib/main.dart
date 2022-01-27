@@ -1,4 +1,8 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_web_libraries_in_flutter
+
+import 'dart:html' show Event, EventListener;
+import 'dart:js' show allowInterop;
+import 'dart:js_util' show getProperty;
 
 import 'package:flutter/material.dart';
 import 'package:web_blue/web_blue.dart';
@@ -51,6 +55,20 @@ class MyHomePage extends StatelessWidget {
               },
             ),
             ElevatedButton(
+              child: const Text('subscribeAvailabilitychanged'),
+              onPressed: () async {
+                blue.subscribeAvailabilitychanged(_handleAvailabilitychanged);
+                print('subscribeAvailabilitychanged success');
+              },
+            ),
+            ElevatedButton(
+              child: const Text('unsubscribeAvailabilitychanged'),
+              onPressed: () async {
+                blue.unsubscribeAvailabilitychanged(_handleAvailabilitychanged);
+                print('unsubscribeAvailabilitychanged success');
+              },
+            ),
+            ElevatedButton(
               child: const Text('Woodemi Notepad'),
               onPressed: () {
                 var route = MaterialPageRoute(builder: (context) {
@@ -65,3 +83,9 @@ class MyHomePage extends StatelessWidget {
     );
   }
 }
+
+final EventListener _handleAvailabilitychanged = allowInterop((Event event) {
+  print('_handleAvailabilitychanged $event');
+  bool available = getProperty(event, 'value');
+  print('available $available');
+});
