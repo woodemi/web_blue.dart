@@ -1,4 +1,7 @@
-// ignore_for_file: avoid_print
+// ignore_for_file: avoid_print, avoid_web_libraries_in_flutter
+
+import 'dart:html' show EventListener;
+import 'dart:js' show allowInterop;
 
 import 'package:flutter/material.dart';
 import 'package:web_blue/web_blue.dart';
@@ -6,6 +9,8 @@ import 'package:web_blue/web_blue.dart';
 const WOODEMI_SUFFIX = 'ba5e-f4ee-5ca1-eb1e5e4b1ce0';
 
 const WOODEMI_SERV__COMMAND = '57444d01-$WOODEMI_SUFFIX';
+const WOODEMI_CHAR__COMMAND_REQUEST = '57444e02-$WOODEMI_SUFFIX';
+const WOODEMI_CHAR__COMMAND_RESPONSE = WOODEMI_CHAR__COMMAND_REQUEST;
 
 class WoodemiNotepadPage extends StatefulWidget {
   const WoodemiNotepadPage({Key? key}) : super(key: key);
@@ -16,6 +21,8 @@ class WoodemiNotepadPage extends StatefulWidget {
 
 class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
   BlueDevice? _device;
+  BlueRemoteGATTService? _service;
+  BlueRemoteGATTCharacteristic? _characteristic;
 
   @override
   Widget build(BuildContext context) {
@@ -28,6 +35,7 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
           children: [
             _buildRequestGet(),
             _buildConnectDisconnect(),
+            _buildServiceCharacteristic(),
           ],
         ),
       ),
@@ -80,6 +88,28 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
           onPressed: () async {
             _device?.gatt.disconnect();
             print('device.gatt.disconnect success');
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildServiceCharacteristic() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: const Text('device.getPrimaryService'),
+          onPressed: () async {
+            _service = await _device!.gatt.getPrimaryService(BlueUUID.getService(WOODEMI_SERV__COMMAND));
+            print('service $_service');
+          },
+        ),
+        ElevatedButton(
+          child: const Text('service.getCharacteristic'),
+          onPressed: () async {
+            _characteristic = await _service!.getCharacteristic(BlueUUID.getCharacteristic(WOODEMI_CHAR__COMMAND_REQUEST));
+            print('characteristic $_characteristic');
           },
         ),
       ],

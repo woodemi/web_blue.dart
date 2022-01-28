@@ -54,8 +54,15 @@ class RequestOptionsFilter {
 @JS('BluetoothUUID.getService')
 external Object _getService(String name);
 
+@JS('BluetoothUUID.getCharacteristic')
+external Object _getCharacteristic(String name);
+
 class BlueUUID {
+  BlueUUID._();
+
   static Object getService(String name) => _getService(name);
+
+  static Object getCharacteristic(String name) => _getCharacteristic(name);
 }
 
 class BlueDevice extends Delegate<Object> {
@@ -75,4 +82,22 @@ class BlueRemoteGATTServer extends Delegate<Object> {
   }
 
   void disconnect() => callMethod('disconnect');
+
+  Future<BlueRemoteGATTService> getPrimaryService(Object bluetoothUuid) {
+    var promise = callMethod('getPrimaryService', [bluetoothUuid]);
+    return promiseToFuture(promise).then((result) => BlueRemoteGATTService._(result));
+  }
+}
+
+class BlueRemoteGATTService extends Delegate<Object> {
+  BlueRemoteGATTService._(Object delegate) : super(delegate);
+
+  Future<BlueRemoteGATTCharacteristic> getCharacteristic(Object bluetoothUuid) {
+    var promise = callMethod('getCharacteristic', [bluetoothUuid]);
+    return promiseToFuture(promise).then((result) => BlueRemoteGATTCharacteristic._(result));
+  }
+}
+
+class BlueRemoteGATTCharacteristic extends Delegate<EventTarget> {
+  BlueRemoteGATTCharacteristic._(EventTarget delegate) : super(delegate);
 }
