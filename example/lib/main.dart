@@ -48,6 +48,12 @@ class MyHomePage extends StatelessWidget {
                 print('availability $availability');
               },
             ),
+            ElevatedButton(
+              child: const Text('BlueUUID.getService'),
+              onPressed: () async {
+                BlueUUID.getService('device_information');
+              },
+            ),
           ],
         ),
       ),

@@ -8,3 +8,16 @@ class Blue extends Delegate<Object> {
     return promiseToFuture(promise);
   }
 }
+
+@JS('BluetoothUUID')
+class BlueUUID {
+  external static Object getService(String name);
+}
+
+/*
+@JS()
+class BlueUUID {
+  @JS('BluetoothUUID.getService')
+  external static Object getService(String name);
+}
+*/
