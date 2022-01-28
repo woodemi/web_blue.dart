@@ -27,6 +27,7 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
         child: Column(
           children: [
             _buildRequestGet(),
+            _buildConnectDisconnect(),
           ],
         ),
       ),
@@ -54,6 +55,31 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
             List<BlueDevice> getDevices = await blue.getDevices();
             print('getDevices $getDevices');
             _device = getDevices[0];
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildConnectDisconnect() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: const Text('device.gatt.connect'),
+          onPressed: () {
+            _device?.gatt.connect().then((value) {
+              print('device.gatt.connect success');
+            }).catchError((error) {
+              print('device.gatt.connect $error');
+            });
+          },
+        ),
+        ElevatedButton(
+          child: const Text('device.gatt.disconnect'),
+          onPressed: () async {
+            _device?.gatt.disconnect();
+            print('device.gatt.disconnect success');
           },
         ),
       ],

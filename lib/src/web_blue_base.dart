@@ -59,5 +59,20 @@ class BlueUUID {
 }
 
 class BlueDevice extends Delegate<Object> {
-  BlueDevice._(Object delegate) : super(delegate);
+  final BlueRemoteGATTServer gatt;
+
+  BlueDevice._(Object delegate)
+      : gatt = BlueRemoteGATTServer._(getProperty(delegate, 'gatt')),
+        super(delegate);
+}
+
+class BlueRemoteGATTServer extends Delegate<Object> {
+  BlueRemoteGATTServer._(Object delegate) : super(delegate);
+
+  Future<BlueRemoteGATTServer> connect() {
+    var promise = callMethod('connect');
+    return promiseToFuture(promise).then((_) => this);
+  }
+
+  void disconnect() => callMethod('disconnect');
 }

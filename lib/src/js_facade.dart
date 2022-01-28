@@ -12,7 +12,7 @@ abstract class Delegate<T extends Object> {
 
   Delegate(this._delegate);
 
-  Prop getProperty<Prop>(String name) => js_util.getProperty(_delegate, name);
+  Prop getPropertyT<Prop>(String name) => js_util.getProperty(_delegate, name);
 
   Result callMethod<Result>(String method, [List<Object> args = const []]) => js_util.callMethod(_delegate, method, args);
 }
