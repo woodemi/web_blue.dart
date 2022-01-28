@@ -2,6 +2,7 @@
 
 import 'dart:html' show EventListener;
 import 'dart:js' show allowInterop;
+import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:web_blue/web_blue.dart';
@@ -38,6 +39,7 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
             _buildServiceCharacteristic(),
             _buildStartStopNotifications(),
             _buildValueChangedSubscription(),
+            _buildReadWriteValue(),
           ],
         ),
       ),
@@ -157,6 +159,28 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
           onPressed: () {
             _characteristic!.unsubscribeValueChanged(_handleValueChanged);
             print('characteristic.unsubscribeValueChanged success');
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildReadWriteValue() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: const Text('characteristic.readValue'),
+          onPressed: () async {
+            var byteData = await _characteristic!.readValue();
+            print('characteristic.readValue $byteData');
+          },
+        ),
+        ElevatedButton(
+          child: const Text('characteristic.writeValueWithResponse'),
+          onPressed: () async {
+            _characteristic!.writeValueWithResponse(Uint8List.fromList([0x01, 0x0A, 0x00, 0x00, 0x00, 0x01]));
+            print('characteristic.writeValueWithResponse success');
           },
         ),
       ],

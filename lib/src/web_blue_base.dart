@@ -124,4 +124,19 @@ class BlueRemoteGATTCharacteristic extends Delegate<EventTarget> {
   void unsubscribeValueChanged(EventListener listener) {
     delegate.removeEventListener('characteristicvaluechanged', listener);
   }
+
+  Future<ByteData> readValue() {
+    var promise = callMethod('readValue');
+    return promiseToFuture(promise);
+  }
+
+  Future<void> writeValueWithResponse(TypedData bytes) {
+    var promise = callMethod('writeValueWithResponse', [bytes]);
+    return promiseToFuture(promise);
+  }
+
+  Future<void> writeValueWithoutResponse(TypedData bytes) {
+    var promise = callMethod('writeValueWithoutResponse', [bytes]);
+    return promiseToFuture(promise);
+  }
 }
