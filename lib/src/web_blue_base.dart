@@ -94,10 +94,34 @@ class BlueRemoteGATTService extends Delegate<Object> {
 
   Future<BlueRemoteGATTCharacteristic> getCharacteristic(Object bluetoothUuid) {
     var promise = callMethod('getCharacteristic', [bluetoothUuid]);
-    return promiseToFuture(promise).then((result) => BlueRemoteGATTCharacteristic._(result));
+    return promiseToFuture(promise).then((result) => BlueRemoteGATTCharacteristic(result));
   }
 }
 
 class BlueRemoteGATTCharacteristic extends Delegate<EventTarget> {
-  BlueRemoteGATTCharacteristic._(EventTarget delegate) : super(delegate);
+  BlueRemoteGATTCharacteristic(EventTarget delegate) : super(delegate);
+
+  String get uuid => getPropertyT('uuid');
+
+  ByteData get value => getPropertyT('value');
+
+  Future<BlueRemoteGATTCharacteristic> startNotifications() {
+    var promise = callMethod('startNotifications');
+    return promiseToFuture(promise).then((_) => this);
+  }
+
+  Future<BlueRemoteGATTCharacteristic> stopNotifications() {
+    var promise = callMethod('stopNotifications');
+    return promiseToFuture(promise).then((_) => this);
+  }
+
+  // FIXME allowInterop
+  void subscribeValueChanged(EventListener listener) {
+    delegate.addEventListener('characteristicvaluechanged', listener);
+  }
+
+  // FIXME allowInterop
+  void unsubscribeValueChanged(EventListener listener) {
+    delegate.removeEventListener('characteristicvaluechanged', listener);
+  }
 }

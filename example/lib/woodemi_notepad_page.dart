@@ -36,6 +36,8 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
             _buildRequestGet(),
             _buildConnectDisconnect(),
             _buildServiceCharacteristic(),
+            _buildStartStopNotifications(),
+            _buildValueChangedSubscription(),
           ],
         ),
       ),
@@ -115,4 +117,54 @@ class _WoodemiNotepadPageState extends State<WoodemiNotepadPage> {
       ],
     );
   }
+
+
+  Widget _buildStartStopNotifications() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: const Text('characteristic.startNotifications'),
+          onPressed: () async {
+            await _characteristic!.startNotifications();
+            print('characteristic.startNotifications success');
+          },
+        ),
+        ElevatedButton(
+          child: const Text('characteristic.stopNotifications'),
+          onPressed: () async {
+            await _characteristic!.stopNotifications();
+            print('characteristic.stopNotifications success');
+          },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildValueChangedSubscription() {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        ElevatedButton(
+          child: const Text('characteristic.subscribeValueChanged'),
+          onPressed: () {
+            _characteristic!.subscribeValueChanged(_handleValueChanged);
+            print('characteristic.subscribeValueChanged success');
+          },
+        ),
+        ElevatedButton(
+          child: const Text('characteristic.unsubscribeValueChanged'),
+          onPressed: () {
+            _characteristic!.unsubscribeValueChanged(_handleValueChanged);
+            print('characteristic.unsubscribeValueChanged success');
+          },
+        ),
+      ],
+    );
+  }
 }
+
+final EventListener _handleValueChanged = allowInterop((event) {
+  var characteristic = BlueRemoteGATTCharacteristic(event.target!);
+  print('_handleValueChanged ${characteristic.uuid}, ${characteristic.value}');
+});

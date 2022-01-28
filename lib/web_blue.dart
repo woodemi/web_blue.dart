@@ -3,6 +3,7 @@ library web_blue;
 
 import 'dart:html' show EventListener, EventTarget;
 import 'dart:js_util' show getProperty, promiseToFuture;
+import 'dart:typed_data';
 
 import 'package:js/js.dart';
 
