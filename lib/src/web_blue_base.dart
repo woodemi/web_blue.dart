@@ -1,36 +1,54 @@
 part of '../web_blue.dart';
 
-class Blue extends Delegate<EventTarget> {
-  Blue._(EventTarget delegate) : super(delegate);
+class Blue extends InteropWrapper<_Blue> {
+  final _Blue _interop;
+
+  Blue._(this._interop);
 
   Future<bool> getAvailability() {
-    var promise = callMethod('getAvailability');
+    var promise = _interop.getAvailability();
     return promiseToFuture(promise);
   }
 
   // FIXME allowInterop
   void subscribeAvailabilitychanged(EventListener listener) {
-    delegate.addEventListener('availabilitychanged', listener);
+    _interop.addEventListener('availabilitychanged', listener);
   }
 
   // FIXME allowInterop
   void unsubscribeAvailabilitychanged(EventListener listener) {
-    delegate.removeEventListener('availabilitychanged', listener);
+    _interop.removeEventListener('availabilitychanged', listener);
   }
 
   Future<BlueDevice> requestDevice([RequestOptions? options]) {
-    var promise = callMethod('requestDevice', [
-      if (options != null) options,
-    ]);
+    var promise = _interop.requestDevice(options);
     return promiseToFuture(promise).then((value) => BlueDevice._(value));
   }
 
   Future<List<BlueDevice>> getDevices() {
-    var promise = callMethod('getDevices');
+    var promise = _interop.getDevices();
     return promiseToFuture(promise).then((value) {
       return (value as List).map((e) => BlueDevice._(e)).toList();
     });
   }
+}
+
+@JS('Bluetooth')
+class _Blue implements Interop {
+  /// https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/getAvailability
+  external Object getAvailability();
+
+  /// https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/requestDevice
+  external Object requestDevice(Object? options);
+
+  /// https://developer.mozilla.org/en-US/docs/Web/API/Bluetooth/getDevices
+  external Object getDevices();
+
+  /// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/addEventListener
+  external void addEventListener(String type, EventListener? listener, [bool? useCapture]);
+
+  /// https://developer.mozilla.org/en-US/docs/Web/API/EventTarget/removeEventListener
+  external void removeEventListener(String type, EventListener? listener, [bool? useCapture]);
 }
 
 @JS()

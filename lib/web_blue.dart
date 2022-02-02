@@ -12,7 +12,7 @@ import 'src/js_facade.dart';
 part 'src/web_blue_base.dart';
 
 @JS('navigator.bluetooth')
-external EventTarget? get _blue;
+external _Blue? get _blue;
 
 bool canUseBlue() => _blue != null;
 
