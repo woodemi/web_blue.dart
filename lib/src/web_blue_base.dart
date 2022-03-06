@@ -71,6 +71,10 @@ class BlueDevice extends Delegate<Object> {
   BlueDevice._(Object delegate)
       : gatt = BlueRemoteGATTServer._(getProperty(delegate, 'gatt')),
         super(delegate);
+
+  String get id => getPropertyT('id');
+
+  String get name => getPropertyT('name');
 }
 
 class BlueRemoteGATTServer extends Delegate<Object> {
